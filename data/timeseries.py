@@ -3,9 +3,9 @@ import numpy as np
 import os
 
 class TimeSeries:
-    def __init__(self):  
+    def __init__(self, base = 'monthly'):  
         self.directory = os.path.dirname(os.path.realpath(__file__))
-        self.file = 'Database.xlsx'
+        self.file = 'Database - ' + base + '.xlsx'
         self.energy = pd.DataFrame()
         self.temperature = pd.DataFrame()
         self.wind_speed = pd.DataFrame()
@@ -35,3 +35,13 @@ class TimeSeries:
         for column in dataframe.select_dtypes(include = np.number):
             dataframe[column].fillna(dataframe[column].rolling(12, min_periods = 1).mean(), inplace = True)
         return dataframe
+    
+    def normalize_z_score(self, dataframe, column, test_size):
+        mean = dataframe[column][:len(dataframe) - test_size].mean()
+        std = dataframe[column][:len(dataframe) - test_size].std()
+        
+        df = dataframe.copy()
+        df[column] = (df[column] - mean)/std
+        
+        return df, mean, std
+        
