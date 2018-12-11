@@ -1,7 +1,3 @@
-# Time Series Forecasting with AR
-
-# Links: https://machinelearningmastery.com/autoregression-models-time-series-forecasting-python/
-
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.arima_model import ARMA
